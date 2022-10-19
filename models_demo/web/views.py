@@ -9,7 +9,7 @@ from models_demo.web.models import Employee, Department, Project
 def info(request):
     employees = Employee.objects.all()
     employees2 = Employee.objects.filter(department=4) \
-        .order_by("-last_name", "first_name")
+        # .order_by("-last_name", "first_name")
 
     # `get` returns a single object and throws error when none or multiple results
     # get is not lazy but eager and returns an object but not QuerySet

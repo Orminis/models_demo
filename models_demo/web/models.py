@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 
@@ -15,14 +16,20 @@ class Project(models.Model):
     name = models.CharField(max_length=45)
     code_name = models.CharField(max_length=30, unique=True)
     deadline = models.DateField()
-'''
-Employee.objects.all()      # Select *
-Employee.objects.create()   # Insert
-Employee.objects.filter()   # Select + Where
-Employee.objects.update()   # Update
-Employee.objects.raw()      # raw SQL
-'''
+
+
 class Employee(models.Model):
+    """
+    Employee.objects.all()      # Select *
+    Employee.objects.create()   # Insert
+    Employee.objects.filter()   # Select + Where
+    Employee.objects.update()   # Update
+    Employee.objects.raw()      # raw SQL
+    """
+
+    class Meta:
+        ordering = ("years_of_exp", '-birth_date')
+
     LEVEL_JUNIOR = "Junior"
     LEVEL_REGULAR = "Regular"
     LEVEL_SENIOR = "Senior"
