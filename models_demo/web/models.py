@@ -2,9 +2,19 @@ from django.db import models
 
 
 # Create your models here.
+class AuditInfoMixin(models.Model):
+    class Meta:
+        # No table will be created in the DB!!!
+        # Can be inherited in other models
+        abstract = True
+
+    # Automatically filled upon creation of an object in corresponding child class table
+    created_on = models.DateTimeField(auto_now=True)
+    # Automatically filled on any update of an object in corresponding child class table
+    updated_on = models.DateTimeField(auto_now_add=True)
 
 
-class Department(models.Model):
+class Department(AuditInfoMixin):
     name = models.CharField(max_length=20)
 
     def __str__(self):
@@ -12,19 +22,20 @@ class Department(models.Model):
         return f"ID: {self.pk}; Name: {self.name}"
 
 
-class Project(models.Model):
+class Project(AuditInfoMixin):
     name = models.CharField(max_length=45)
     code_name = models.CharField(max_length=30, unique=True)
     deadline = models.DateField()
 
 
-class Employee(models.Model):
+class Employee(AuditInfoMixin):
     """
     Employee.objects.all()      # Select *
     Employee.objects.create()   # Insert
     Employee.objects.filter()   # Select + Where
     Employee.objects.update()   # Update
     Employee.objects.raw()      # raw SQL
+    etc...
     """
 
     class Meta:
@@ -55,10 +66,13 @@ class Employee(models.Model):
     start_date = models.DateField()
     # Date/Time field
     birth_date = models.DateField()
-    # Automatically filled upon creation of an Employee
-    created_on = models.DateTimeField(auto_now=True)
-    # Automatically filled on any update of the specific employee
-    updated_on = models.DateTimeField(auto_now_add=True)
+
+    # Can be put in abstract class so every child class to have the same columns.
+    # # Automatically filled upon creation of an Employee
+    # created_on = models.DateTimeField(auto_now=True)
+    # # Automatically filled on any update of the specific employee
+    # updated_on = models.DateTimeField(auto_now_add=True)
+
     # choices
     level = models.CharField(
         max_length=len(LEVEL_REGULAR),
